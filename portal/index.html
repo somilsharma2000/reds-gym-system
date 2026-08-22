@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDS GYM — Member Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #e63946;
+            --red-glow: rgba(230, 57, 70, 0.35);
+            --red-dark: #b71c2c;
+            --red-light: #ff4d5a;
+            --black: #08080a;
+            --charcoal: #121214;
+            --graphite: #1a1a1e;
+            --steel: #26262c;
+            --ash: #3a3a42;
+            --fog: #8a8a96;
+            --mist: #c4c4cc;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.04);
+            --glass-card: rgba(26, 26, 30, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-red: rgba(230, 57, 70, 0.3);
+            --green: #22c55e;
+            --green-glow: rgba(34, 197, 94, 0.25);
+            --amber: #f59e0b;
+            --blue: #3b82f6;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-glow: 0 0 25px rgba(230, 57, 70, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(230, 57, 70, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(230, 57, 70, 0.05) 0%, transparent 40%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--steel); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+        /* TYPOGRAPHY */
+        .font-anton { font-family: 'Anton', sans-serif; letter-spacing: 1.5px; text-transform: uppercase; }
+        
+        /* UTILITY & GLASS CARDS */
+        .glass-panel {
+            background: var(--glass-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-panel.glow-red {
+            border-color: var(--glass-border-red);
+            box-shadow: 0 8px 32px rgba(230, 57, 70, 0.12);
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            outline: none;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .btn-red {
+            background: linear-gradient(135deg, var(--red) 0%, #c02633 100%);
+            color: var(--white);
+            box-shadow: 0 4px 20px var(--red-glow);
+        }
+
+        .btn-red:hover {
+            background: linear-gradient(135deg, var(--red-light) 0%, var(--red) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(230, 57, 70, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-outline:hover {
+            background: var(--glass);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+        }
+
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+        }
+
+        .btn-full { width: 100%; }
+
+        /* BADGES */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-red { background: rgba(230, 57, 70, 0.18); color: var(--red-light); border: 1px solid rgba(230, 57, 70, 0.3); }
+        .badge-green { background: rgba(34, 197, 94, 0.18); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-gray { background: rgba(255, 255, 255, 0.08); color: var(--fog); border: 1px solid var(--glass-border); }
+
+        /* FORM INPUTS */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--mist);
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--fog);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            padding-left: 44px;
+            background: var(--charcoal);
+            border: 1px solid var(--steel);
+            border-radius: var(--radius-sm);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control.no-icon {
+            padding-left: 16px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+            background: var(--graphite);
+        }
+
+        /* LOGIN VIEW */
+        #login-view {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            background: radial-gradient(circle at 50% 30%, rgba(230, 57, 70, 0.18) 0%, rgba(8, 8, 10, 0.95) 70%);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(18, 18, 20, 0.85);
+            border: 1px solid var(--glass-border-red);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), var(--shadow-glow);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .brand-logo {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.4rem;
+            letter-spacing: 3px;
+            color: var(--white);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-logo span { color: var(--red); }
+
+        .brand-subtitle {
+            font-size: 0.85rem;
+            color: var(--fog);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .demo-box {
+            background: rgba(230, 57, 70, 0.08);
+            border: 1px dashed rgba(230, 57, 70, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-bottom: 24px;
+            font-size: 0.82rem;
+            color: var(--mist);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-box svg { color: var(--red); flex-shrink: 0; }
+
+        /* PORTAL SHELL */
+        #portal-view {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 270px;
+            background: var(--charcoal);
+            border-right: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            padding: 24px 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .sidebar-user {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red) 0%, #800e19 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--white);
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            flex-shrink: 0;
+        }
+
+        .user-info .user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        .user-info .user-role {
+            font-size: 0.75rem;
+            color: var(--fog);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-menu {
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            color: var(--fog);
+            font-weight: 500;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item.active {
+            color: var(--white);
+            background: rgba(230, 57, 70, 0.15);
+            font-weight: 700;
+            border-left: 3px solid var(--red);
+        }
+
+        .nav-item.active svg {
+            color: var(--red);
+        }
+
+        .sidebar-widget {
+            padding: 16px;
+            margin: 0 16px 16px;
+            background: var(--graphite);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--glass-border);
+        }
+
+        .sidebar-widget-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--fog);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 1.8s infinite;
+        }
+
+        /* MAIN CONTENT AREA */
+        .main-wrapper {
+            margin-left: 270px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: margin 0.3s ease;
+        }
+
+        .top-header {
+            height: 72px;
+            background: rgba(18, 18, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .header-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .streak-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(230, 57, 70, 0.12);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--red-light);
+        }
+
+        .streak-pill svg { color: var(--red); animation: flame 1.5s ease-in-out infinite alternate; }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--graphite);
+            border: 1px solid var(--glass-border);
+            color: var(--mist);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--steel);
+            color: var(--white);
+            border-color: var(--red);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+        }
+
+        .content-container {
+            padding: 32px;
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* PAGE SECTIONS */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* GRID LAYOUTS */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .grid-dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+
+        /* HERO BANNER */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.2) 0%, rgba(18, 18, 20, 0.9) 100%), var(--charcoal);
+            border: 1px solid var(--glass-border-red);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-text h1 {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .hero-text p {
+            color: var(--fog);
+            font-size: 1rem;
+            max-width: 500px;
+        }
+
+        /* STAT CARD */
+        .stat-card {
+            background: var(--graphite);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--fog);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(230, 57, 70, 0.12);
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-value {
+            font-family: 'Anton', sans-serif;
+            font-size: 2.2rem;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: var(--white);
+        }
+
+        .stat-footer {
+            font-size: 0.78rem;
+            color: var(--mist);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* SCHEDULE & CLASS CARDS */
+        .class-card {
+            background: var(--graphite);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .class-card:hover {
+            border-color: var(--glass-border-red);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .class-card.booked {
+            border-color: rgba(34, 197, 94, 0.4);
+            background: linear-gradient(180deg, rgba(34, 197, 94, 0.05) 0%, var(--graphite) 100%);
+        }
+
+        .class-time {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.1rem;
+            color: var(--red-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .class-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-top: 4px;
+        }
+
+        .class-meta {
+            font-size: 0.85rem;
+            color: var(--fog);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .capacity-bar-container {
+            margin-top: 6px;
+        }
+
+        .capacity-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--fog);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--steel);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--red) 0%, var(--red-light) 100%);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-fill.green { background: var(--green); }
+
+        /* TABLES */
+        .custom-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+        }
+
+        .custom-table th {
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--fog);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .custom-table td {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.9rem;
+            color: var(--mist);
+            vertical-align: middle;
+        }
+
+        .custom-table tr:last-child td { border-bottom: none; }
+
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--white);
+        }
+
+        /* PR CARDS */
+        .pr-card {
+            background: var(--graphite);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .pr-card:hover {
+            border-color: var(--glass-border-red);
+            background: var(--steel);
+        }
+
+        .pr-lift-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--white);
+        }
+
+        .pr-date {
+            font-size: 0.78rem;
+            color: var(--fog);
+            margin-top: 4px;
+        }
+
+        .pr-value {
+            font-family: 'Anton', sans-serif;
+            font-size: 2rem;
+            color: var(--red);
+            letter-spacing: 1px;
+        }
+
+        /* STREAK CALENDAR */
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: var(--charcoal);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--fog);
+            position: relative;
+        }
+
+        .calendar-day.workout {
+            background: rgba(230, 57, 70, 0.2);
+            border-color: var(--red);
+            color: var(--white);
+        }
+
+        .calendar-day.workout::after {
+            content: '🔥';
+            font-size: 0.7rem;
+            position: absolute;
+            bottom: 2px;
+        }
+
+        .calendar-day.today {
+            box-shadow: 0 0 0 2px var(--white);
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .modal-body {
+            background: var(--charcoal);
+            border: 1px solid var(--glass-border-red);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--fog);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover { color: var(--white); }
+
+        /* TOAST NOTIFICATIONS */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--charcoal);
+            border: 1px solid var(--red);
+            border-left: 4px solid var(--red);
+            color: var(--white);
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease-out forwards;
+            pointer-events: auto;
+            max-width: 360px;
+        }
+
+        .toast.success {
+            border-color: var(--green);
+            border-left-color: var(--green);
+        }
+
+        .toast svg { flex-shrink: 0; }
+
+        /* KEYFRAMES */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        @keyframes flame {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.18); }
+        }
+
+        /* TOGGLE SWITCH */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--steel);
+            transition: .3s;
+            border-radius: 26px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider { background-color: var(--red); }
+        input:checked + .toggle-slider:before { transform: translateX(22px); }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .main-wrapper { margin-left: 0; }
+            .grid-dashboard, .grid-4, .grid-3 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .top-header { padding: 0 16px; }
+            .content-container { padding: 20px 16px; }
+            .mobile-menu-btn { display: flex !important; }
+        }
+
+        .mobile-menu-btn { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN SCREEN VIEW -->
+    <div id="login-view">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="brand-logo">REDS<span>GYM</span></div>
+                <div class="brand-subtitle">MEMBER PORTAL</div>
+            </div>
+
+            <div class="demo-box">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                    <strong>Demo Access Pre-filled</strong><br>
+                    Click "Sign In to Portal" to enter instantly.
+                </div>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                        <input type="email" id="login-email" class="form-control" value="alex.vance@redsgym.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label>Password</label>
+                        <a href="#" onclick="showToast('Password reset link sent to email!', 'success')" style="font-size:0.78rem; color:var(--red-light); text-decoration:none;">Forgot?</a>
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </span>
+                        <input type="password" id="login-password" class="form-control" value="••••••••••••" required>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px; font-size:0.85rem; color:var(--fog);">
+                    <input type="checkbox" id="remember" checked style="accent-color:var(--red);">
+                    <label for="remember" style="cursor:pointer;">Remember this device</label>
+                </div>
+
+                <button type="submit" class="btn btn-red btn-full">
+                    <span>Sign In to Portal</span>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+
+                <div style="text-align:center; margin-top:24px; font-size:0.88rem; color:var(--fog);">
+                    Don't have a membership yet? <a href="#" onclick="toggleSignUpModal()" style="color:var(--red-light); font-weight:700; text-decoration:none;">Sign Up Here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- MAIN MEMBER PORTAL VIEW -->
+    <div id="portal-view">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div>
+                <div class="sidebar-brand">
+                    <div class="brand-logo">REDS<span>GYM</span></div>
+                    <div class="brand-subtitle">MEMBER PORTAL</div>
+                </div>
+
+                <div class="sidebar-user">
+                    <div class="avatar">AV</div>
+                    <div class="user-info">
+                        <div class="user-name">Alex Vance</div>
+                        <div class="user-role">
+                            <span class="badge badge-red">ELITE MEMBER</span>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="nav-menu">
+                    <a class="nav-item active" onclick="switchPage('dashboard', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a class="nav-item" onclick="switchPage('classes', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <span>Book a Class</span>
+                    </a>
+
+                    <a class="nav-item" onclick="switchPage('membership', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>My Membership</span>
+                    </a>
+
+                    <a class="nav-item" onclick="switchPage('progress', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        <span>Progress Tracker</span>
+                    </a>
+
+                    <a class="nav-item" onclick="switchPage('referral', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 13C7.163 21 3 16.837 3 12S7.163 3 12 3s9 4.163 9 9-4.163 9-9 9z"/></svg>
+                        <span>Refer a Friend</span>
+                    </a>
+
+                    <a class="nav-item" onclick="switchPage('settings', this)">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div>
+                <div class="sidebar-widget">
+                    <div class="sidebar-widget-header">
+                        <span>LIVE GYM CAPACITY</span>
+                        <div class="pulse-dot"></div>
+                    </div>
+                    <div style="font-family:'Anton'; font-size:1.3rem; color:var(--white);">32 LIFTERS INSIDE</div>
+                    <div style="font-size:0.75rem; color:var(--fog); margin-top:4px;">Peak Hours • 70% Busy</div>
+                </div>
+
+                <div style="padding: 0 16px;">
+                    <button class="btn btn-outline btn-full" onclick="handleLogout()">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT WRAPPER -->
+        <div class="main-wrapper">
+            
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button class="icon-btn mobile-menu-btn" onclick="toggleMobileSidebar()">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </button>
+                    <div class="header-title" id="page-header-title">DASHBOARD</div>
+                </div>
+
+                <div class="header-actions">
+                    <div class="streak-pill">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 23c-4.97 0-9-3.58-9-8 0-3.08 2.03-6.62 5.09-9.52.48-.46 1.25-.13 1.25.53 0 .73.23 2.12 1.02 2.76.88.71 2.01.21 2.45-.88.62-1.54.91-3.32.91-5.11 0-.44.5-.68.82-.38C18.66 6.3 21 10.96 21 15c0 4.42-4.03 8-9 8z"/></svg>
+                        <span>14 DAY STREAK 🔥</span>
+                    </div>
+
+                    <button class="btn btn-red btn-sm" onclick="openQrModal()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                        <span>Digital Gym Pass</span>
+                    </button>
+
+                    <button class="icon-btn" onclick="showToast('No new notifications', 'info')">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </header>
+
+
+            <!-- PAGE CONTENT CONTAINER -->
+            <div class="content-container">
+
+                <!-- 1. DASHBOARD PAGE -->
+                <section id="page-dashboard" class="page-section active">
+                    <div class="hero-banner">
+                        <div class="hero-text">
+                            <h1>WELCOME BACK, ALEX! 💪</h1>
+                            <p>Ready to hit today's session? You have a reserved spot for <strong>Powerlifting & Heavy Compound</strong> at 5:00 PM today.</p>
+                        </div>
+                        <button class="btn btn-red" onclick="switchPage('classes', document.querySelectorAll('.nav-item')[1])">
+                            <span>View All Classes</span>
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- STAT CARDS ROW -->
+                    <div class="grid-4" style="margin-bottom:28px;">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span>CLASSES ATTENDED</span>
+                                <div class="stat-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                </div>
+                            </div>
+                            <div class="stat-value">42</div>
+                            <div class="stat-footer">
+                                <span class="badge badge-green">+4 this month</span>
+                                <span>vs last month</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span>WORKOUT STREAK</span>
+                                <div class="stat-icon">
+                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 23c-4.97 0-9-3.58-9-8 0-3.08 2.03-6.62 5.09-9.52.48-.46 1.25-.13 1.25.53 0 .73.23 2.12 1.02 2.76.88.71 2.01.21 2.45-.88.62-1.54.91-3.32.91-5.11 0-.44.5-.68.82-.38C18.66 6.3 21 10.96 21 15c0 4.42-4.03 8-9 8z"/></svg>
+                                </div>
+                            </div>
+                            <div class="stat-value">14 DAYS</div>
+                            <div class="stat-footer">
+                                <span class="badge badge-red">Personal Best 🔥</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span>PRS LOGGED</span>
+                                <div class="stat-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                                </div>
+                            </div>
+                            <div class="stat-value">12 LOGS</div>
+                            <div class="stat-footer">
+                                <span style="color:var(--white); font-weight:700;">Latest: Deadlift 180kg</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span>MEMBERSHIP AGE</span>
+                                <div class="stat-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                            </div>
+                            <div class="stat-value">185 DAYS</div>
+                            <div class="stat-footer">
+                                <span class="badge badge-green">Elite Monthly £30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TWO COLUMN MAIN DASHBOARD GRID -->
+                    <div class="grid-dashboard">
+                        
+                        <div style="display:flex; flex-direction:column; gap:24px;">
+                            <!-- NEXT CLASS BOOKING CARD -->
+                            <div class="glass-panel glow-red">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+                                    <div>
+                                        <span class="badge badge-red">UPCOMING CLASS TODAY</span>
+                                        <h2 style="font-size:1.4rem; font-weight:800; margin-top:8px;">Powerlifting & Heavy Compound</h2>
+                                    </div>
+                                    <button class="btn btn-outline btn-sm" onclick="openQrModal()">Check-In Code</button>
+                                </div>
+
+                                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:20px; padding:16px; background:var(--charcoal); border-radius:var(--radius-sm);">
+                                    <div>
+                                        <div style="font-size:0.75rem; color:var(--fog);">TIME</div>
+                                        <div style="font-weight:700; color:var(--white); margin-top:2px;">5:00 PM - 6:15 PM</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:0.75rem; color:var(--fog);">INSTRUCTOR</div>
+                                        <div style="font-weight:700; color:var(--white); margin-top:2px;">Coach Marcus</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:0.75rem; color:var(--fog);">LOCATION</div>
+                                        <div style="font-weight:700; color:var(--white); margin-top:2px;">Main Rack Zone</div>
+                                    </div>
+                                </div>
+
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="font-size:0.85rem; color:var(--mist);">8 Lifters booked • 7 spots remaining</span>
+                                    <button class="btn btn-glass btn-sm" onclick="showToast('Booking cancelled. Spot released.', 'info')">Cancel Booking</button>
+                                </div>
+                            </div>
+
+                            <!-- RECENT ACTIVITY FEED -->
+                            <div class="glass-panel">
+                                <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px; color:var(--white);">RECENT ACTIVITY</h3>
+                                
+                                <div style="display:flex; flex-direction:column; gap:16px;">
+                                    <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                                        <div style="display:flex; align-items:center; gap:12px;">
+                                            <div style="width:36px; height:36px; border-radius:50%; background:rgba(34,197,94,0.15); color:var(--green); display:flex; align-items:center; justify-content:center;">
+                                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight:700; font-size:0.92rem;">Completed Powerlifting Class</div>
+                                                <div style="font-size:0.78rem; color:var(--fog);">Coach Marcus • Main Rack Zone</div>
+                                            </div>
+                                        </div>
+                                        <span style="font-size:0.78rem; color:var(--fog);">2 hours ago</span>
+                                    </div>
+
+                                    <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                                        <div style="display:flex; align-items:center; gap:12px;">
+                                            <div style="width:36px; height:36px; border-radius:50%; background:rgba(230,57,70,0.15); color:var(--red); display:flex; align-items:center; justify-content:center;">
+                                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight:700; font-size:0.92rem;">Logged New PR: Deadlift 180kg</div>
+                                                <div style="font-size:0.78rem; color:var(--fog);">+10kg increase from last month! 🚀</div>
+                                            </div>
+                                        </div>
+                                        <span style="font-size:0.78rem; color:var(--fog);">Yesterday</span>
+                                    </div>
+
+                                    <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                                        <div style="display:flex; align-items:center; gap:12px;">
+                                            <div style="width:36px; height:36px; border-radius:50%; background:rgba(59,130,246,0.15); color:var(--blue); display:flex; align-items:center; justify-content:center;">
+                                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                            </div>
+                                            <div>
+                                                <div style="font-weight:700; font-size:0.92rem;">Renewed Elite Membership Pass</div>
+                                                <div style="font-size:0.78rem; color:var(--fog);">Invoice #RG-2026-0801 • £30.00</div>
+                                            </div>
+                                        </div>
+                                        <span style="font-size:0.78rem; color:var(--fog);">3 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN SIDEBAR ON DASHBOARD -->
+                        <div style="display:flex; flex-direction:column; gap:24px;">
+                            
+                            <!-- QUICK PR SUMMARY CARD -->
+                            <div class="glass-panel">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                                    <h3 class="font-anton" style="font-size:1.1rem; color:var(--white);">YOUR TOP LIFTS</h3>
+                                    <a onclick="switchPage('progress', document.querySelectorAll('.nav-item')[3])" style="font-size:0.8rem; color:var(--red-light); cursor:pointer; text-decoration:none;">View All</a>
+                                </div>
+
+                                <div style="display:flex; flex-direction:column; gap:12px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--charcoal); padding:10px 14px; border-radius:var(--radius-sm);">
+                                        <span style="font-weight:700;">Squat</span>
+                                        <span class="font-anton" style="color:var(--red); font-size:1.3rem;">140 KG</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--charcoal); padding:10px 14px; border-radius:var(--radius-sm);">
+                                        <span style="font-weight:700;">Bench Press</span>
+                                        <span class="font-anton" style="color:var(--red); font-size:1.3rem;">100 KG</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--charcoal); padding:10px 14px; border-radius:var(--radius-sm);">
+                                        <span style="font-weight:700;">Deadlift</span>
+                                        <span class="font-anton" style="color:var(--red); font-size:1.3rem;">180 KG</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ANNOUNCEMENT CARD -->
+                            <div class="glass-panel" style="background: linear-gradient(180deg, rgba(230,57,70,0.1) 0%, var(--graphite) 100%);">
+                                <span class="badge badge-red" style="margin-bottom:10px;">GYM ANNOUNCEMENT</span>
+                                <h4 style="font-weight:800; font-size:1.05rem; margin-bottom:6px;">New Rogue Calibrated Plates Arrived!</h4>
+                                <p style="font-size:0.85rem; color:var(--fog); line-height:1.4;">We've added 500kg of competition calibrated iron to Platform 3 & 4. Drop in and test them out!</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- 2. BOOK A CLASS PAGE -->
+                <section id="page-classes" class="page-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 class="font-anton" style="font-size:1.8rem;">WEEKLY CLASS SCHEDULE</h2>
+                            <p style="color:var(--fog); font-size:0.9rem;">Reserve your spot in high-intensity REDS group training sessions.</p>
+                        </div>
+
+                        <!-- CATEGORY FILTER TABS -->
+                        <div style="display:flex; gap:8px; background:var(--charcoal); padding:4px; border-radius:var(--radius-sm); border:1px solid var(--glass-border);">
+                            <button class="btn btn-sm btn-red" onclick="filterClasses('all', this)">All Classes</button>
+                            <button class="btn btn-sm btn-glass" onclick="filterClasses('powerlifting', this)">Powerlifting</button>
+                            <button class="btn btn-sm btn-glass" onclick="filterClasses('bodybuilding', this)">Bodybuilding</button>
+                            <button class="btn btn-sm btn-glass" onclick="filterClasses('strength', this)">Strength</button>
+                            <button class="btn btn-sm btn-glass" onclick="filterClasses('pt', this)">PT Sessions</button>
+                        </div>
+                    </div>
+
+                    <!-- CLASS CARDS GRID -->
+                    <div class="grid-3" id="class-cards-container">
+                        
+                        <!-- Class 1 -->
+                        <div class="class-card" data-category="powerlifting">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="class-time">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Mon / Wed / Fri • 6:00 AM</span>
+                                    </div>
+                                    <span class="badge badge-red">Powerlifting</span>
+                                </div>
+                                <div class="class-title">Powerlifting & Heavy Compound</div>
+                                <div class="class-meta" style="margin-top:8px;">
+                                    <span>Instructor: <strong>Coach Marcus</strong></span>
+                                    <span>Location: Main Rack Zone • 75 mins</span>
+                                </div>
+                            </div>
+
+                            <div class="capacity-bar-container">
+                                <div class="capacity-labels">
+                                    <span class="spots-text">8 / 15 Spots Left</span>
+                                    <span>53% Full</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 47%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-red btn-full" onclick="toggleBookClass(this, 'Powerlifting 6:00 AM')">Book Class</button>
+                        </div>
+
+                        <!-- Class 2 -->
+                        <div class="class-card" data-category="bodybuilding">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="class-time">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Mon / Tue / Thu • 9:00 AM</span>
+                                    </div>
+                                    <span class="badge badge-amber">Bodybuilding</span>
+                                </div>
+                                <div class="class-title">Bodybuilding & Hypertrophy</div>
+                                <div class="class-meta" style="margin-top:8px;">
+                                    <span>Instructor: <strong>Coach Sarah</strong></span>
+                                    <span>Location: Dumbbell Arena • 60 mins</span>
+                                </div>
+                            </div>
+
+                            <div class="capacity-bar-container">
+                                <div class="capacity-labels">
+                                    <span class="spots-text">4 / 12 Spots Left</span>
+                                    <span>66% Full</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 66%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-red btn-full" onclick="toggleBookClass(this, 'Bodybuilding 9:00 AM')">Book Class</button>
+                        </div>
+
+                        <!-- Class 3 -->
+                        <div class="class-card" data-category="strength">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="class-time">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Mon / Wed / Fri • 5:00 PM</span>
+                                    </div>
+                                    <span class="badge badge-red">Strength</span>
+                                </div>
+                                <div class="class-title">Strength & Conditioning</div>
+                                <div class="class-meta" style="margin-top:8px;">
+                                    <span>Instructor: <strong>Coach Dave</strong></span>
+                                    <span>Location: Functional Rig • 75 mins</span>
+                                </div>
+                            </div>
+
+                            <div class="capacity-bar-container">
+                                <div class="capacity-labels">
+                                    <span class="spots-text">12 / 15 Spots Left</span>
+                                    <span>20% Full</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 20%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-red btn-full" onclick="toggleBookClass(this, 'Strength & Conditioning 5:00 PM')">Book Class</button>
+                        </div>
+
+                        <!-- Class 4 -->
+                        <div class="class-card" data-category="pt">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="class-time">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Daily • 7:00 PM</span>
+                                    </div>
+                                    <span class="badge badge-green">PT Sessions</span>
+                                </div>
+                                <div class="class-title">1-on-1 Personal Training Session</div>
+                                <div class="class-meta" style="margin-top:8px;">
+                                    <span>Instructor: <strong>Master Trainer Alex</strong></span>
+                                    <span>Location: Private Coaching Suite • 60 mins</span>
+                                </div>
+                            </div>
+
+                            <div class="capacity-bar-container">
+                                <div class="capacity-labels">
+                                    <span class="spots-text">2 / 5 Spots Left</span>
+                                    <span>60% Full</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-red btn-full" onclick="toggleBookClass(this, '1-on-1 PT 7:00 PM')">Book Class</button>
+                        </div>
+
+                        <!-- Class 5 -->
+                        <div class="class-card" data-category="powerlifting">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <div class="class-time">
+                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span>Sat & Sun • 10:00 AM</span>
+                                    </div>
+                                    <span class="badge badge-gray">Open Mat</span>
+                                </div>
+                                <div class="class-title">Weekend Heavy Lifts & Open Rig</div>
+                                <div class="class-meta" style="margin-top:8px;">
+                                    <span>Instructor: <strong>REDS Staff</strong></span>
+                                    <span>Location: Main Gym Floor • 120 mins</span>
+                                </div>
+                            </div>
+
+                            <div class="capacity-bar-container">
+                                <div class="capacity-labels">
+                                    <span class="spots-text">18 / 25 Spots Left</span>
+                                    <span>28% Full</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 28%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-red btn-full" onclick="toggleBookClass(this, 'Weekend Heavy Lifts 10:00 AM')">Book Class</button>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <!-- 3. MY MEMBERSHIP PAGE -->
+                <section id="page-membership" class="page-section">
+                    <div style="margin-bottom:28px;">
+                        <h2 class="font-anton" style="font-size:1.8rem;">MY MEMBERSHIP & BILLING</h2>
+                        <p style="color:var(--fog); font-size:0.9rem;">Manage your active plan, payment history, and membership options.</p>
+                    </div>
+
+                    <div class="grid-2" style="margin-bottom:32px;">
+                        <!-- CURRENT PLAN CARD -->
+                        <div class="glass-panel glow-red">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+                                <div>
+                                    <span class="badge badge-red">CURRENT ACTIVE PLAN</span>
+                                    <h2 class="font-anton" style="font-size:2rem; margin-top:6px;">ELITE MONTHLY PASS</h2>
+                                    <div style="font-size:1.8rem; font-weight:800; color:var(--white); margin-top:4px;">£30<span style="font-size:1rem; color:var(--fog); font-weight:400;">/month</span></div>
+                                </div>
+                                <span class="badge badge-green">ACTIVE ✓</span>
+                            </div>
+
+                            <div style="padding:16px; background:var(--charcoal); border-radius:var(--radius-sm); margin-bottom:20px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.88rem;">
+                                    <span style="color:var(--fog);">Next Payment Date:</span>
+                                    <strong style="color:var(--white);">August 15, 2026</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.88rem;">
+                                    <span style="color:var(--fog);">Payment Method:</span>
+                                    <strong style="color:var(--white);">Visa ending in •••• 4291</strong>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                                <button class="btn btn-red" onclick="openUpgradeModal()">Upgrade to Annual (£300/yr)</button>
+                                <button class="btn btn-outline" onclick="openFreezeModal()">Freeze Membership</button>
+                            </div>
+                        </div>
+
+                        <!-- PLAN INCLUDED BENEFITS -->
+                        <div class="glass-panel">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">INCLUDED WITH YOUR MEMBERSHIP</h3>
+                            
+                            <ul style="list-style:none; display:flex; flex-direction:column; gap:12px; font-size:0.92rem; color:var(--mist);">
+                                <li style="display:flex; align-items:center; gap:10px;">
+                                    <svg width="18" height="18" fill="none" stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Unlimited 24/7 Access to all REDS GYM locations</span>
+                                </li>
+                                <li style="display:flex; align-items:center; gap:10px;">
+                                    <svg width="18" height="18" fill="none" stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>All Group Classes (Powerlifting, Bodybuilding, S&C) included</span>
+                                </li>
+                                <li style="display:flex; align-items:center; gap:10px;">
+                                    <svg width="18" height="18" fill="none" stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Sauna & Cold Plunge Suite Access</span>
+                                </li>
+                                <li style="display:flex; align-items:center; gap:10px;">
+                                    <svg width="18" height="18" fill="none" stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>2 Free Guest Passes every month</span>
+                                </li>
+                                <li style="display:flex; align-items:center; gap:10px;">
+                                    <svg width="18" height="18" fill="none" stroke="var(--green)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    <span>Free Locker & Towel Service</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT HISTORY TABLE -->
+                    <div class="glass-panel">
+                        <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">PAYMENT HISTORY</h3>
+                        
+                        <div style="overflow-x:auto;">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Invoice ID</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Invoice</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Jul 15, 2026</td>
+                                        <td>#RG-2026-0715</td>
+                                        <td>Elite Monthly Membership</td>
+                                        <td>£30.00</td>
+                                        <td><span class="badge badge-green">Paid ✓</span></td>
+                                        <td><a href="#" onclick="showToast('Downloading Invoice PDF...', 'info')" style="color:var(--red-light); text-decoration:none;">Download PDF</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jun 15, 2026</td>
+                                        <td>#RG-2026-0615</td>
+                                        <td>Elite Monthly Membership</td>
+                                        <td>£30.00</td>
+                                        <td><span class="badge badge-green">Paid ✓</span></td>
+                                        <td><a href="#" onclick="showToast('Downloading Invoice PDF...', 'info')" style="color:var(--red-light); text-decoration:none;">Download PDF</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>May 15, 2026</td>
+                                        <td>#RG-2026-0515</td>
+                                        <td>Elite Monthly Membership</td>
+                                        <td>£30.00</td>
+                                        <td><span class="badge badge-green">Paid ✓</span></td>
+                                        <td><a href="#" onclick="showToast('Downloading Invoice PDF...', 'info')" style="color:var(--red-light); text-decoration:none;">Download PDF</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apr 15, 2026</td>
+                                        <td>#RG-2026-0415</td>
+                                        <td>Elite Monthly Membership</td>
+                                        <td>£30.00</td>
+                                        <td><span class="badge badge-green">Paid ✓</span></td>
+                                        <td><a href="#" onclick="showToast('Downloading Invoice PDF...', 'info')" style="color:var(--red-light); text-decoration:none;">Download PDF</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 4. PROGRESS TRACKER PAGE -->
+                <section id="page-progress" class="page-section">
+                    <div style="margin-bottom:28px;">
+                        <h2 class="font-anton" style="font-size:1.8rem;">PROGRESS TRACKER & PR LOG</h2>
+                        <p style="color:var(--fog); font-size:0.9rem;">Record your personal records, track strength gains, and maintain your streak.</p>
+                    </div>
+
+                    <div class="grid-2" style="margin-bottom:28px;">
+                        
+                        <!-- LOG WORKOUT / PR FORM -->
+                        <div class="glass-panel glow-red">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">LOG NEW PERSONAL RECORD</h3>
+                            
+                            <form onsubmit="handleLogPR(event)">
+                                <div class="form-group">
+                                    <label>Exercise</label>
+                                    <select id="pr-exercise" class="form-control no-icon" style="appearance:none;" required>
+                                        <option value="Squat">Squat</option>
+                                        <option value="Bench Press">Bench Press</option>
+                                        <option value="Deadlift">Deadlift</option>
+                                        <option value="Overhead Press">Overhead Press</option>
+                                        <option value="Barbell Row">Barbell Row</option>
+                                    </select>
+                                </div>
+
+                                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+                                    <div class="form-group">
+                                        <label>Weight (kg)</label>
+                                        <input type="number" id="pr-weight" class="form-control no-icon" placeholder="140" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Reps</label>
+                                        <input type="number" id="pr-reps" class="form-control no-icon" value="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sets</label>
+                                        <input type="number" id="pr-sets" class="form-control no-icon" value="1" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-red btn-full">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                                    <span>Log Record</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- RECENT PR HALL OF FAME CARDS -->
+                        <div>
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">PERSONAL RECORDS</h3>
+                            <div style="display:flex; flex-direction:column; gap:12px;" id="pr-list-container">
+                                
+                                <div class="pr-card">
+                                    <div>
+                                        <div class="pr-lift-title">Squat</div>
+                                        <div class="pr-date">Logged Aug 1, 2026 • 1 Rep</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="pr-value">140 KG</div>
+                                        <span class="badge badge-green">+5kg PR</span>
+                                    </div>
+                                </div>
+
+                                <div class="pr-card">
+                                    <div>
+                                        <div class="pr-lift-title">Bench Press</div>
+                                        <div class="pr-date">Logged Jul 28, 2026 • 1 Rep</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="pr-value">100 KG</div>
+                                        <span class="badge badge-green">+2.5kg PR</span>
+                                    </div>
+                                </div>
+
+                                <div class="pr-card">
+                                    <div>
+                                        <div class="pr-lift-title">Deadlift</div>
+                                        <div class="pr-date">Logged Aug 2, 2026 • 1 Rep</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="pr-value">180 KG</div>
+                                        <span class="badge badge-green">+10kg PR 🔥</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- PROGRESS CHART & STREAK CALENDAR -->
+                    <div class="grid-2">
+                        <!-- PROGRESS BAR CHART -->
+                        <div class="glass-panel">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">STRENGTH PROGRESSION (DEADLIFT KG)</h3>
+                            
+                            <div style="display:flex; align-items:flex-end; gap:16px; height:200px; padding-top:20px; border-bottom:1px solid var(--steel);">
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                                    <span style="font-size:0.75rem; color:var(--fog);">140kg</span>
+                                    <div style="width:100%; background:var(--steel); height:60%; border-radius:4px 4px 0 0;"></div>
+                                    <span style="font-size:0.75rem; color:var(--fog);">Mar</span>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                                    <span style="font-size:0.75rem; color:var(--fog);">150kg</span>
+                                    <div style="width:100%; background:var(--steel); height:70%; border-radius:4px 4px 0 0;"></div>
+                                    <span style="font-size:0.75rem; color:var(--fog);">Apr</span>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                                    <span style="font-size:0.75rem; color:var(--fog);">160kg</span>
+                                    <div style="width:100%; background:var(--steel); height:80%; border-radius:4px 4px 0 0;"></div>
+                                    <span style="font-size:0.75rem; color:var(--fog);">May</span>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                                    <span style="font-size:0.75rem; color:var(--fog);">170kg</span>
+                                    <div style="width:100%; background:var(--red-dark); height:90%; border-radius:4px 4px 0 0;"></div>
+                                    <span style="font-size:0.75rem; color:var(--fog);">Jun</span>
+                                </div>
+                                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end;">
+                                    <span style="font-size:0.8rem; font-weight:800; color:var(--red-light);">180kg</span>
+                                    <div style="width:100%; background:linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%); height:100%; border-radius:4px 4px 0 0;"></div>
+                                    <span style="font-size:0.75rem; font-weight:700; color:var(--white);">Aug</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- WORKOUT STREAK CALENDAR -->
+                        <div class="glass-panel">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                <h3 class="font-anton" style="font-size:1.2rem;">30-DAY ATTENDANCE STREAK</h3>
+                                <span class="badge badge-red">14 DAYS ACTIVE</span>
+                            </div>
+
+                            <div class="streak-grid">
+                                <div class="calendar-day workout">21</div>
+                                <div class="calendar-day workout">22</div>
+                                <div class="calendar-day workout">23</div>
+                                <div class="calendar-day">24</div>
+                                <div class="calendar-day workout">25</div>
+                                <div class="calendar-day workout">26</div>
+                                <div class="calendar-day workout">27</div>
+                                <div class="calendar-day workout">28</div>
+                                <div class="calendar-day workout">29</div>
+                                <div class="calendar-day workout">30</div>
+                                <div class="calendar-day workout">31</div>
+                                <div class="calendar-day workout">1</div>
+                                <div class="calendar-day workout">2</div>
+                                <div class="calendar-day workout today">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 5. REFER A FRIEND PAGE -->
+                <section id="page-referral" class="page-section">
+                    <div style="margin-bottom:28px;">
+                        <h2 class="font-anton" style="font-size:1.8rem;">REFER A FRIEND, GET FREE MONTHS! 🎁</h2>
+                        <p style="color:var(--fog); font-size:0.9rem;">Give your friends £10 off their first month and earn a free month for every friend who joins.</p>
+                    </div>
+
+                    <div class="grid-2" style="margin-bottom:28px;">
+                        <!-- REFERRAL LINK BOX -->
+                        <div class="glass-panel glow-red">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:12px;">YOUR UNIQUE REFERRAL LINK</h3>
+                            <p style="font-size:0.85rem; color:var(--fog); margin-bottom:16px;">Share this link via WhatsApp, social media, or text.</p>
+
+                            <div class="input-wrapper" style="margin-bottom:16px;">
+                                <input type="text" id="referral-url" class="form-control no-icon" value="https://redsgym.com/ref/alex88" readonly style="font-weight:700; color:var(--red-light);">
+                            </div>
+
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn btn-red" style="flex:1;" onclick="copyReferralLink()">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                                    <span id="copy-btn-text">Copy Link</span>
+                                </button>
+                                
+                                <button class="btn btn-outline" style="background:#25D366; border:none; color:white;" onclick="window.open('https://wa.me/?text=Join%20me%20at%20REDS%20GYM!%20Use%20my%20link%20for%20a%20discount:%20https://redsgym.com/ref/alex88', '_blank')">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                                    <span>WhatsApp</span>
+                                </button>
+
+                                <button class="btn btn-outline" style="background:linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border:none; color:white;" onclick="showToast('Instagram story template copied!', 'success')">
+                                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                    <span>Instagram</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- REWARD PROGRESS METER -->
+                        <div class="glass-panel">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:12px;">REWARD STATUS</h3>
+                            <div style="font-size:0.9rem; color:var(--fog); margin-bottom:16px;">1 of 3 Friends Referred</div>
+
+                            <div class="progress-bar" style="height:12px; margin-bottom:12px;">
+                                <div class="progress-fill" style="width:33%;"></div>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--mist); margin-bottom:20px;">
+                                <span>1st Friend: 1 Month Free ✓</span>
+                                <span>3rd Friend: Gym Bag + Shaker Pack</span>
+                            </div>
+
+                            <div style="padding:12px; background:var(--charcoal); border-radius:var(--radius-sm); border:1px solid var(--glass-border);">
+                                <strong style="color:var(--green);">£30 Credit Applied</strong>
+                                <p style="font-size:0.8rem; color:var(--fog); margin-top:2px;">Your next billing cycle on Aug 15 will automatically apply your £30 referral credit.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REFERRED FRIENDS LIST TABLE -->
+                    <div class="glass-panel">
+                        <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">FRIENDS YOU'VE REFERRED</h3>
+                        
+                        <div style="overflow-x:auto;">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Friend Name</th>
+                                        <th>Date Joined</th>
+                                        <th>Membership Tier</th>
+                                        <th>Status</th>
+                                        <th>Reward Earned</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Marcus Wright</td>
+                                        <td>Jul 20, 2026</td>
+                                        <td>Elite Monthly</td>
+                                        <td><span class="badge badge-green">Completed ✓</span></td>
+                                        <td style="color:var(--white); font-weight:700;">1 Free Month (£30)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jake Miller</td>
+                                        <td>Aug 2, 2026</td>
+                                        <td>Elite Monthly</td>
+                                        <td><span class="badge badge-green">Completed ✓</span></td>
+                                        <td style="color:var(--white); font-weight:700;">1 Free Month (£30)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Elena Rostova</td>
+                                        <td>Invite Sent</td>
+                                        <td>Pending Signup</td>
+                                        <td><span class="badge badge-amber">Pending</span></td>
+                                        <td style="color:var(--fog);">Pending Activation</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 6. SETTINGS PAGE -->
+                <section id="page-settings" class="page-section">
+                    <div style="margin-bottom:28px;">
+                        <h2 class="font-anton" style="font-size:1.8rem;">ACCOUNT SETTINGS</h2>
+                        <p style="color:var(--fog); font-size:0.9rem;">Update your personal profile information, security settings, and notifications.</p>
+                    </div>
+
+                    <div class="grid-2">
+                        <!-- PROFILE INFORMATION -->
+                        <div class="glass-panel">
+                            <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">PROFILE INFORMATION</h3>
+                            
+                            <form onsubmit="handleSaveSettings(event)">
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" class="form-control no-icon" value="Alex Vance" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control no-icon" value="alex.vance@redsgym.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="form-control no-icon" value="+44 7700 900088" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Emergency Contact</label>
+                                    <input type="text" class="form-control no-icon" value="Sarah Vance (+44 7700 900123)" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-red">Save Profile</button>
+                            </form>
+                        </div>
+
+                        <!-- NOTIFICATIONS & PREFERENCES -->
+                        <div style="display:flex; flex-direction:column; gap:20px;">
+                            <div class="glass-panel">
+                                <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">NOTIFICATION PREFERENCES</h3>
+                                
+                                <div style="display:flex; flex-direction:column; gap:16px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <div style="font-weight:700; font-size:0.92rem;">Class Booking Reminders</div>
+                                            <div style="font-size:0.78rem; color:var(--fog);">Receive SMS & Email 1 hour before class</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <div style="font-weight:700; font-size:0.92rem;">PR Milestone Celebrations</div>
+                                            <div style="font-size:0.78rem; color:var(--fog);">Get notified when you hit new PR strength milestones</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <div style="font-weight:700; font-size:0.92rem;">Gym Announcements</div>
+                                            <div style="font-size:0.78rem; color:var(--fog);">New equipment arrivals and holiday hours updates</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel">
+                                <h3 class="font-anton" style="font-size:1.2rem; margin-bottom:16px;">SECURITY</h3>
+                                <button class="btn btn-outline btn-full" onclick="showToast('Password reset link sent to your email!', 'success')">Change Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- MODALS -->
+    <!-- QR CODE CHECK-IN MODAL -->
+    <div class="modal-overlay" id="qr-modal">
+        <div class="modal-body" style="text-align:center;">
+            <button class="modal-close" onclick="closeQrModal()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            
+            <div class="brand-logo" style="margin-bottom:8px;">REDS<span>GYM</span></div>
+            <div style="font-size:0.85rem; color:var(--fog); margin-bottom:20px;">DIGITAL MEMBER PASS</div>
+
+            <!-- SVG QR CODE SIMULATION -->
+            <div style="background:white; padding:20px; border-radius:12px; display:inline-block; margin-bottom:16px;">
+                <svg width="180" height="180" viewBox="0 0 100 100" fill="black">
+                    <rect width="100" height="100" fill="white"/>
+                    <!-- Corners -->
+                    <rect x="10" y="10" width="25" height="25" fill="black"/>
+                    <rect x="14" y="14" width="17" height="17" fill="white"/>
+                    <rect x="18" y="18" width="9" height="9" fill="black"/>
+                    
+                    <rect x="65" y="10" width="25" height="25" fill="black"/>
+                    <rect x="69" y="14" width="17" height="17" fill="white"/>
+                    <rect x="73" y="18" width="9" height="9" fill="black"/>
+
+                    <rect x="10" y="65" width="25" height="25" fill="black"/>
+                    <rect x="14" y="69" width="17" height="17" fill="white"/>
+                    <rect x="18" y="73" width="9" height="9" fill="black"/>
+
+                    <!-- Patterns -->
+                    <rect x="40" y="10" width="10" height="10"/>
+                    <rect x="45" y="25" width="12" height="12"/>
+                    <rect x="10" y="40" width="15" height="8"/>
+                    <rect x="35" y="45" width="30" height="10"/>
+                    <rect x="75" y="40" width="15" height="15"/>
+                    <rect x="45" y="65" width="15" height="25"/>
+                    <rect x="70" y="70" width="20" height="15"/>
+                </svg>
+            </div>
+
+            <div style="font-family:'Anton'; font-size:1.4rem; color:var(--red-light); letter-spacing:2px;">MEMBER ID: RG-8842</div>
+            <div style="font-size:0.8rem; color:var(--fog); margin-top:6px;">Scan at turnstile scanner to gain entry.</div>
+        </div>
+    </div>
+
+
+    <!-- FREEZE MEMBERSHIP MODAL -->
+    <div class="modal-overlay" id="freeze-modal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="closeFreezeModal()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="font-anton" style="font-size:1.4rem; margin-bottom:12px;">FREEZE MEMBERSHIP</h3>
+            <p style="font-size:0.88rem; color:var(--fog); margin-bottom:20px;">Need to take a break due to travel or injury? You can pause your billing for up to 3 months.</p>
+
+            <div class="form-group">
+                <label>Select Freeze Duration</label>
+                <select id="freeze-months" class="form-control no-icon">
+                    <option value="1">1 Month (30 Days)</option>
+                    <option value="2">2 Months (60 Days)</option>
+                    <option value="3">3 Months (90 Days)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-red btn-full" onclick="confirmFreeze()">Confirm Freeze</button>
+        </div>
+    </div>
+
+
+    <!-- UPGRADE MEMBERSHIP MODAL -->
+    <div class="modal-overlay" id="upgrade-modal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="closeUpgradeModal()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <span class="badge badge-red" style="margin-bottom:10px;">SAVE £60 PER YEAR</span>
+            <h3 class="font-anton" style="font-size:1.5rem; margin-bottom:12px;">UPGRADE TO ANNUAL PASS</h3>
+            <p style="font-size:0.88rem; color:var(--fog); margin-bottom:20px;">Pay £300 today for a full year of unlimited VIP access (Equivalent to £25/month).</p>
+
+            <button class="btn btn-red btn-full" onclick="confirmUpgrade()">Confirm Upgrade (£300)</button>
+        </div>
+    </div>
+
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+
+    <!-- JAVASCRIPT INTERACTIVITY -->
+    <script>
+        // HANDLE LOGIN
+        function handleLogin(event) {
+            event.preventDefault();
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('portal-view').style.display = 'block';
+            showToast('Welcome back, Alex!', 'success');
+        }
+
+        // HANDLE LOGOUT
+        function handleLogout() {
+            document.getElementById('portal-view').style.display = 'none';
+            document.getElementById('login-view').style.display = 'flex';
+            showToast('Logged out successfully', 'info');
+        }
+
+        // PAGE SWITCHING
+        function switchPage(pageId, navElement) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Show selected page
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update nav item active state
+            if (navElement) {
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => item.classList.remove('active'));
+                navElement.classList.add('active');
+            }
+
+            // Update Header Title
+            const titleMap = {
+                'dashboard': 'DASHBOARD',
+                'classes': 'BOOK A CLASS',
+                'membership': 'MY MEMBERSHIP',
+                'progress': 'PROGRESS TRACKER',
+                'referral': 'REFER A FRIEND',
+                'settings': 'SETTINGS'
+            };
+            document.getElementById('page-header-title').innerText = titleMap[pageId] || 'MEMBER PORTAL';
+
+            // Close mobile sidebar if open
+            document.getElementById('sidebar').classList.remove('mobile-open');
+        }
+
+        // FILTER CLASSES
+        function filterClasses(category, btnElement) {
+            // Update active filter button
+            const filterBtns = btnElement.parentElement.querySelectorAll('button');
+            filterBtns.forEach(btn => btn.className = 'btn btn-sm btn-glass');
+            btnElement.className = 'btn btn-sm btn-red';
+
+            const cards = document.querySelectorAll('#class-cards-container .class-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // BOOK A CLASS TOGGLE
+        function toggleBookClass(button, className) {
+            const card = button.closest('.class-card');
+            const spotsText = card.querySelector('.spots-text');
+            
+            if (button.classList.contains('btn-red')) {
+                button.className = 'btn btn-outline btn-full';
+                button.innerHTML = '<span>Booked ✓</span>';
+                card.classList.add('booked');
+                if (spotsText && spotsText.innerText.includes('Spots Left')) {
+                    const currentSpots = parseInt(spotsText.innerText);
+                    if (!isNaN(currentSpots) && currentSpots > 0) {
+                        const total = spotsText.innerText.split('/')[1];
+                        spotsText.innerText = `${currentSpots - 1} /${total}`;
+                    }
+                }
+                showToast(`Reserved your spot for ${className}!`, 'success');
+            } else {
+                button.className = 'btn btn-red btn-full';
+                button.innerHTML = '<span>Book Class</span>';
+                card.classList.remove('booked');
+                if (spotsText && spotsText.innerText.includes('Spots Left')) {
+                    const currentSpots = parseInt(spotsText.innerText);
+                    if (!isNaN(currentSpots)) {
+                        const total = spotsText.innerText.split('/')[1];
+                        spotsText.innerText = `${currentSpots + 1} /${total}`;
+                    }
+                }
+                showToast(`Cancelled booking for ${className}`, 'info');
+            }
+        }
+
+        // LOG PR FORM
+        function handleLogPR(event) {
+            event.preventDefault();
+            const exercise = document.getElementById('pr-exercise').value;
+            const weight = document.getElementById('pr-weight').value;
+            const reps = document.getElementById('pr-reps').value;
+
+            const prContainer = document.getElementById('pr-list-container');
+            const newPrCard = document.createElement('div');
+            newPrCard.className = 'pr-card';
+            newPrCard.innerHTML = `
+                <div>
+                    <div class="pr-lift-title">${exercise}</div>
+                    <div class="pr-date">Logged Just Now • ${reps} Rep</div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="pr-value">${weight} KG</div>
+                    <span class="badge badge-green">NEW PR 🔥</span>
+                </div>
+            `;
+            prContainer.prepend(newPrCard);
+
+            showToast(`Awesome lift! ${exercise} ${weight}kg recorded!`, 'success');
+            document.getElementById('pr-weight').value = '';
+        }
+
+        // COPY REFERRAL LINK
+        function copyReferralLink() {
+            const linkInput = document.getElementById('referral-url');
+            navigator.clipboard.writeText(linkInput.value);
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.innerText = 'Copied! ✓';
+            showToast('Referral link copied to clipboard!', 'success');
+            setTimeout(() => {
+                btnText.innerText = 'Copy Link';
+            }, 2500);
+        }
+
+        // MODAL HANDLERS
+        function openQrModal() { document.getElementById('qr-modal').classList.add('active'); }
+        function closeQrModal() { document.getElementById('qr-modal').classList.remove('active'); }
+
+        function openFreezeModal() { document.getElementById('freeze-modal').classList.add('active'); }
+        function closeFreezeModal() { document.getElementById('freeze-modal').classList.remove('active'); }
+
+        function openUpgradeModal() { document.getElementById('upgrade-modal').classList.add('active'); }
+        function closeUpgradeModal() { document.getElementById('upgrade-modal').classList.remove('active'); }
+
+        function confirmFreeze() {
+            closeFreezeModal();
+            const months = document.getElementById('freeze-months').value;
+            showToast(`Membership frozen for ${months} month(s).`, 'info');
+        }
+
+        function confirmUpgrade() {
+            closeUpgradeModal();
+            showToast('Upgraded to Annual Pass! 🎉 Saved £60.', 'success');
+        }
+
+        function handleSaveSettings(event) {
+            event.preventDefault();
+            showToast('Profile settings saved successfully!', 'success');
+        }
+
+        function toggleSignUpModal() {
+            showToast('Sign up form: Demo credentials pre-filled!', 'info');
+        }
+
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        }
+
+        // TOAST SYSTEM
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let iconSvg = '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+            if (type === 'success') {
+                iconSvg = '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+            }
+
+            toast.innerHTML = `${iconSvg}<span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
