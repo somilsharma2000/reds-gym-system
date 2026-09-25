@@ -13,7 +13,7 @@
 
 const GymOS = {
   config: {
-    apiUrl: 'https://vesper-923580a1.base44.app/functions/captureGymLead',
+    apiUrl: 'https://base44.app/api/apps/6a85aadd01bc42f293723858/functions/captureGymLead',
     portalUrl: 'https://my-gym-os.base44.app',
     dashboardUrl: 'https://my-gym-os.base44.app',
     gymName: 'Gym',
