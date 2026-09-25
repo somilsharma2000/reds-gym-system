@@ -135,7 +135,7 @@ const GymOS = {
     if (!this.config.isDemo || document.querySelector('[data-gymos-banner]')) return;
     const banner = document.createElement('div');
     banner.setAttribute('data-gymos-banner', '');
-    banner.innerHTML = '<div style="background:linear-gradient(135deg,#0A0E27 0%,#1a1e3a 100%);color:#fff;text-align:center;padding:10px 16px;font-size:13px;font-family:Inter,sans-serif;position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:1px solid rgba(0,102,255,0.3);"><span>⚡ This is a demo website built with <b style="color:#0066FF;">Gym OS</b> by Beyond Pixels</span><a href="https://somilsharma2000.github.io/beyond-pixells/" target="_blank" rel="noopener" style="color:#0066FF;text-decoration:none;font-weight:600;border-bottom:1px solid #0066FF;">Get one for your gym →</a></div>';
+    banner.innerHTML = '<div style="background:linear-gradient(135deg,#0A0E27 0%,#1a1e3a 100%);color:#fff;text-align:center;padding:10px 16px;font-size:13px;font-family:Inter,sans-serif;position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:1px solid rgba(0,102,255,0.3);"><span>⚡ This is a demo website built with <b style="color:#0066FF;">Gym OS</b> by Beyond Pixells</span><a href="https://somilsharma2000.github.io/beyond-pixells/" target="_blank" rel="noopener" style="color:#0066FF;text-decoration:none;font-weight:600;border-bottom:1px solid #0066FF;">Get one for your gym →</a></div>';
     document.body.insertBefore(banner, document.body.firstChild);
   },
 };
