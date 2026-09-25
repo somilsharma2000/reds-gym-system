@@ -830,12 +830,12 @@
         </div>
         <div class="contact-form-card reveal">
             <h3>Claim Your <span>Free Day Pass</span></h3>
-            <form onsubmit="alert('Thank you! Jack will contact you shortly.'); return false;">
-                <div class="form-group"><label>Your Name</label><input type="text" placeholder="Enter your name" required></div>
-                <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="Your phone number" required></div>
-                <div class="form-group"><label>Email (Optional)</label><input type="email" placeholder="Your email address"></div>
-                <div class="form-group"><label>I'm Interested In</label><select><option>Free Day Pass</option><option>Monthly Membership — £30/mo</option><option>Pay As You Go — £5/session</option><option>Personal Training</option><option>Just looking for now</option></select></div>
-                <div class="form-group"><label>Your Goals (Optional)</label><textarea rows="3" placeholder="Tell us what you want to achieve..."></textarea></div>
+            <form data-gymos-lead>
+                <div class="form-group"><label>Your Name</label><input type="text" name="name" placeholder="Enter your name" required></div>
+                <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="Your phone number" required></div>
+                <div class="form-group"><label>Email (Optional)</label><input type="email" name="email" placeholder="Your email address"></div>
+                <div class="form-group"><label>I'm Interested In</label><select name="interest"><option>Free Day Pass</option><option>Monthly Membership — £30/mo</option><option>Pay As You Go — £5/session</option><option>Personal Training</option><option>Just looking for now</option></select></div>
+                <div class="form-group"><label>Your Goals (Optional)</label><textarea rows="3" name="goals" placeholder="Tell us what you want to achieve..."></textarea></div>
                 <button type="submit" class="form-submit">Claim My Free Day Pass</button>
             </form>
         </div>
@@ -858,8 +858,9 @@
         <button class="popup-close" onclick="closePopup()">×</button>
         <h2>Get a <span>FREE</span> Day Pass</h2>
         <p>Enter your email and we'll send you a free day pass to try REDS GYM — no strings attached.</p>
-        <form onsubmit="closePopup(); alert('Your free day pass is on its way!'); return false;">
-            <input type="email" placeholder="Your email address" required>
+        <form data-gymos-lead>
+            <input type="hidden" name="interest" value="Free Day Pass (popup)">
+            <input type="email" name="email" placeholder="Your email address" required>
             <button type="submit">Claim My Free Pass</button>
         </form>
         <p class="popup-note">No spam. Just one email with your pass. That's it.</p>
@@ -952,5 +953,8 @@
     function closePopup() { document.getElementById('popup').classList.remove('show'); }
     document.getElementById('popup').addEventListener('click', e => { if (e.target === e.currentTarget) closePopup(); });
 </script>
+    <!-- GYM OS INTEGRATION -->
+    <script>window.GymOSConfig = { gymName: 'Reds Gym', whatsappNumber: '+447515788990', isDemo: true };</script>
+    <script src="./gym-os-connect.js"></script>
 </body>
 </html>
