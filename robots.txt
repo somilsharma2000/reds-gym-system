@@ -1,0 +1,15 @@
+# robots.txt — Beyond Pixells client site
+User-agent: *
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://somilsharma2000.github.io/reds-gym-system/sitemap.xml
