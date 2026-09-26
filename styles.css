@@ -1,0 +1,220 @@
+/* ============================================================
+   OXIGEN FITNESS — CANONICAL CLIENT SYSTEM STYLES
+   Built on the Beyond Pixells design system (bp-design-system.css).
+   Only layout lives here: tokens, motion, lighting come from the
+   shared system. Accent flavor: Gym OS crimson → amber.
+   ============================================================ */
+
+:root{
+  --maxw: 1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--bp-font-body);
+  background:var(--bp-canvas);
+  color:var(--bp-text-primary);
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,blockquote{font-family:var(--bp-font-display)}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+
+.site-shell{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.section-pad{padding:88px 0}
+.hl{background:var(--bp-gradient-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bp-text-secondary);border:1px solid var(--bp-border-subtle);border-radius:100px;padding:8px 16px;background:rgba(18,20,26,.6)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--bp-cyan);box-shadow:0 0 10px var(--bp-cyan);animation:bp-dotPulse 2.4s ease-in-out infinite}
+.eyebrow-text{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--bp-amber);margin:0 0 14px}
+h2{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:700;line-height:1.15;margin:0 0 18px}
+
+/* ---------- HEADER ---------- */
+.site-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 0;background:transparent;z-index:1000}
+.site-header .brand{display:flex;align-items:center;gap:10px;font-family:var(--bp-font-display);font-weight:700;letter-spacing:.08em;font-size:.92rem}
+.brand-mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--bp-gradient-brand);color:#fff;font-weight:700}
+.desktop-nav{display:flex;gap:20px;font-size:.82rem;color:var(--bp-text-secondary)}
+.desktop-nav a:hover{color:var(--bp-text-primary)}
+.header-actions{display:flex;align-items:center;gap:16px;font-size:.82rem}
+.member-login-link{color:var(--bp-text-secondary)}
+.member-login-link:hover{color:var(--bp-cyan)}
+
+/* ---------- BUTTONS ---------- */
+.button{display:inline-flex;align-items:center;gap:8px;font-family:var(--bp-font-body);font-weight:600;font-size:.88rem;border-radius:12px;padding:13px 22px;border:1px solid transparent;cursor:pointer;transition:box-shadow .3s var(--bp-ease-smooth),border-color .3s var(--bp-ease-smooth),background-color .3s}
+.button-primary{background:var(--bp-gradient-brand);background-size:150% 150%;color:#fff;animation:bp-gradientShift 8s var(--bp-ease-smooth) infinite}
+.button-primary:hover{box-shadow:0 8px 30px rgba(255,90,20,.35)}
+.button-ghost{background:rgba(18,20,26,.6);color:var(--bp-text-primary);border-color:var(--bp-border-default)}
+.button-ghost:hover{border-color:rgba(255,122,0,.4);color:var(--bp-amber)}
+.form-submit{width:100%;justify-content:center}
+.text-link{display:inline-flex;gap:6px;font-weight:600;color:var(--bp-amber);margin-top:10px}
+
+/* ---------- HERO ---------- */
+.hero{padding-top:64px}
+.hero-grid{display:grid;grid-template-columns:1.35fr .8fr;gap:44px;align-items:center;margin-top:30px}
+.hero h1{font-size:clamp(2.4rem,5.4vw,4rem);font-weight:700;line-height:1.06;margin:22px 0 18px}
+.hero-copy{font-size:1.02rem;color:var(--bp-text-secondary);line-height:1.7;max-width:560px;margin:0 0 28px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.micro-copy{font-size:.76rem;color:var(--bp-text-muted);margin-top:18px}
+.hero-card{background:var(--bp-surface-1);padding:34px;border-radius:var(--bp-r-lg)}
+.hero-card .card-kicker{font-size:.7rem;font-weight:700;letter-spacing:.16em;color:var(--bp-cyan);margin:0 0 16px}
+.hero-card blockquote{font-size:1.7rem;font-weight:600;line-height:1.25;margin:0 0 22px}
+.hero-card .steps{display:flex;justify-content:space-between;gap:8px}
+.hero-card .steps span{display:flex;flex-direction:column;gap:6px;font-size:.72rem;color:var(--bp-text-secondary)}
+.hero-card .steps b{font-family:var(--bp-font-display);color:var(--bp-amber);font-size:.95rem}
+.hero-card-note{font-size:.72rem;color:var(--bp-text-muted);margin:22px 0 0}
+
+/* ---------- ABOUT ---------- */
+.statement-band{display:grid;grid-template-columns:180px 1fr;gap:28px;border-top:1px solid var(--bp-border-subtle);border-bottom:1px solid var(--bp-border-subtle);padding:64px 0;background:linear-gradient(180deg,rgba(18,20,26,.4),transparent)}
+.statement-side{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--bp-text-muted);text-transform:uppercase}
+.about-stats-grid{display:flex;gap:14px;flex-wrap:wrap;margin-top:26px}
+.stat-item{display:flex;flex-direction:column;gap:4px;padding:18px 22px;background:var(--bp-surface-1)}
+.stat-num{font-family:var(--bp-font-display);font-size:1.5rem;font-weight:700;color:var(--bp-amber)}
+.stat-label{font-size:.74rem;color:var(--bp-text-secondary)}
+
+/* ---------- PROGRAMS ---------- */
+.feature-grid .feature-intro{max-width:520px;margin-bottom:38px}
+.program-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.program-card{display:flex;gap:18px;background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle);border-radius:var(--bp-r-lg);padding:26px}
+.program-card > p{font-family:var(--bp-font-display);font-size:1.1rem;color:var(--bp-amber);margin:0;font-weight:700}
+.program-card h3{font-size:1.15rem;margin:0 0 8px}
+.program-card span{font-size:.86rem;color:var(--bp-text-secondary);line-height:1.6}
+
+/* ---------- TIMETABLE ---------- */
+.split-section{display:grid;grid-template-columns:.9fr 1.4fr;gap:44px;align-items:start}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{font-family:var(--bp-font-body);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bp-text-secondary);border:1px solid var(--bp-border-default);background:transparent;border-radius:100px;padding:8px 14px;cursor:pointer;transition:all .25s var(--bp-ease-smooth)}
+.chip:hover{color:var(--bp-text-primary);border-color:var(--bp-amber)}
+.chip.active{background:var(--bp-gradient-brand);border-color:transparent;color:#fff}
+.class-list-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.class-card{background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle);border-radius:var(--bp-r-md);padding:20px;display:flex;flex-direction:column;gap:10px}
+.class-card.hidden-by-filter{display:none}
+.class-meta{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.class-badge{font-size:.62rem;font-weight:700;letter-spacing:.1em;color:var(--bp-cyan);border:1px solid rgba(0,242,254,.3);border-radius:6px;padding:4px 8px;white-space:nowrap}
+.class-time{font-size:.68rem;color:var(--bp-text-muted);text-align:right}
+.class-card h3{font-size:1.02rem;margin:0}
+.class-card p{font-size:.8rem;color:var(--bp-text-secondary);line-height:1.55;margin:0}
+.book-spot{font-size:.74rem;font-weight:600;color:var(--bp-amber);margin-top:auto}
+
+/* ---------- COACHES ---------- */
+.people-section-full{border-top:1px solid var(--bp-border-subtle)}
+.trainers-header{max-width:560px;margin-bottom:38px}
+.trainers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.trainer-card{background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle);border-radius:var(--bp-r-lg);padding:28px;display:flex;flex-direction:column;gap:12px}
+.trainer-avatar{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:var(--bp-gradient-subtle);border:1px solid var(--bp-border-default);font-family:var(--bp-font-display);font-weight:700;color:var(--bp-amber)}
+.trainer-role{font-size:.64rem;font-weight:700;letter-spacing:.14em;color:var(--bp-cyan)}
+.trainer-card h3{font-size:1.2rem;margin:0}
+.trainer-bio{font-size:.82rem;color:var(--bp-text-secondary);line-height:1.6;margin:0}
+.trainer-tags{display:flex;gap:6px;flex-wrap:wrap}
+.trainer-tags span{font-size:.68rem;color:var(--bp-text-muted);border:1px solid var(--bp-border-default);border-radius:6px;padding:4px 10px}
+
+/* ---------- MEMBERSHIPS ---------- */
+.membership-wrap{border-top:1px solid var(--bp-border-subtle)}
+.membership-copy{max-width:560px;margin-bottom:38px}
+.membership-cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.membership-card{position:relative;display:flex;flex-direction:column;gap:12px;background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle);border-radius:var(--bp-r-lg);padding:30px}
+.popular-badge{position:absolute;top:-12px;right:22px;font-size:.62rem;font-weight:700;letter-spacing:.1em;background:var(--bp-gradient-brand);border-radius:100px;padding:6px 14px;color:#fff}
+.card-kicker{font-size:.66rem;font-weight:700;letter-spacing:.14em;color:var(--bp-text-secondary);margin:0}
+.membership-card h3{font-size:1.3rem;margin:0}
+.price-tag{display:flex;align-items:baseline;gap:6px}
+.price-tag .amount{font-family:var(--bp-font-display);font-size:2rem;font-weight:700;color:var(--bp-amber)}
+.price-tag .period{font-size:.8rem;color:var(--bp-text-muted)}
+.plan-desc{font-size:.84rem;color:var(--bp-text-secondary);line-height:1.6;margin:0}
+.plan-features{list-style:none;padding:0;margin:8px 0 18px;display:flex;flex-direction:column;gap:8px;font-size:.8rem;color:var(--bp-text-secondary)}
+.plan-features li::before{content:"✓";color:var(--bp-cyan);margin-right:10px;font-weight:700}
+.membership-card .button{margin-top:auto;justify-content:center}
+
+/* ---------- FACILITIES ---------- */
+.facility-grid-four{display:grid;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:auto auto;gap:16px;padding:64px 0}
+.facility-panel{border-radius:var(--bp-r-lg);padding:30px;background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle)}
+.lead-panel{grid-row:span 2;background:var(--bp-surface-2)}
+.equipment-lines{display:flex;flex-direction:column;gap:14px;font-family:var(--bp-font-display);font-size:.84rem;font-weight:600;letter-spacing:.06em;color:var(--bp-text-secondary)}
+.facility-panel h3{font-size:1.1rem;margin:0 0 8px}
+.facility-panel p{font-size:.8rem;color:var(--bp-text-secondary);line-height:1.6;margin:0}
+
+/* ---------- WHY MEMBERS STAY ---------- */
+.testimonials-section{border-top:1px solid var(--bp-border-subtle)}
+.testimonials-header{max-width:560px;margin-bottom:38px}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.testimonial-card{display:flex;flex-direction:column;gap:10px;background:var(--bp-surface-1);border:1px solid var(--bp-border-subtle);border-radius:var(--bp-r-lg);padding:28px}
+.testimonial-card .ico{font-size:1.4rem}
+.testimonial-card h3{font-size:1.05rem;margin:0}
+.testimonial-card blockquote{font-size:.84rem;color:var(--bp-text-secondary);line-height:1.65;margin:0;font-family:var(--bp-font-body)}
+.reviews-badge{margin-top:26px;display:flex}
+.reviews-link{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--bp-border-default);border-radius:var(--bp-r-md);padding:14px 20px;background:var(--bp-surface-1);font-size:.84rem}
+.g-logo{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#4285F4;color:#fff;font-weight:700;font-family:var(--bp-font-display)}
+.stars{color:var(--bp-warning);letter-spacing:2px}
+
+/* ---------- QR CHECK-IN ---------- */
+.qr-section{border-top:1px solid var(--bp-border-subtle)}
+.qr-container{display:grid;grid-template-columns:1fr .8fr;gap:44px;align-items:center}
+.qr-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.qr-badge{font-size:.7rem;font-weight:600;border:1px solid var(--bp-border-default);border-radius:100px;padding:8px 14px;color:var(--bp-text-secondary)}
+.qr-box-wrap{background:var(--bp-surface-1);padding:34px;border-radius:var(--bp-r-lg);display:flex;justify-content:center}
+
+/* ---------- TRIAL ---------- */
+.trial-section{display:grid;grid-template-columns:1fr 1fr;gap:44px;border-top:1px solid var(--bp-border-subtle)}
+.trial-steps{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:14px}
+.trial-steps li{display:flex;gap:14px;align-items:baseline;font-size:.86rem;color:var(--bp-text-secondary)}
+.trial-steps b{font-family:var(--bp-font-display);color:var(--bp-amber)}
+.lead-form{background:var(--bp-surface-1);padding:30px;border-radius:var(--bp-r-lg);display:flex;flex-direction:column;gap:14px}
+.lead-form label{display:flex;flex-direction:column;gap:8px;font-size:.74rem;font-weight:600;letter-spacing:.04em;color:var(--bp-text-secondary);text-transform:uppercase}
+.lead-form input,.lead-form textarea{font-family:var(--bp-font-body);font-size:.9rem;color:var(--bp-text-primary);background:var(--bp-canvas);border:1px solid var(--bp-border-default);border-radius:10px;padding:13px 15px;outline:none;transition:border-color .25s}
+.lead-form input:focus,.lead-form textarea:focus{border-color:var(--bp-cyan)}
+.form-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.consent{flex-direction:row!important;align-items:flex-start!important;gap:10px!important;text-transform:none!important;font-weight:400!important;font-size:.74rem!important;line-height:1.5;color:var(--bp-text-muted)!important}
+.consent input{width:auto}
+.form-status{font-size:.78rem;margin:0}
+.form-managed-note{font-size:.7rem;color:var(--bp-text-muted);margin:0;text-align:center}
+.upi-trial{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.upi-label{font-size:.8rem;color:var(--bp-text-secondary);margin:0}
+.upi-trial .button{align-self:flex-start}
+
+/* ---------- CONTACT ---------- */
+.contact-section{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:64px 0;border-top:1px solid var(--bp-border-subtle)}
+.contact-actions{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.contact-note{font-size:.76rem;color:var(--bp-text-muted);margin:14px 0 0}
+
+/* ---------- FOOTER ---------- */
+.site-footer{border-top:1px solid var(--bp-border-subtle);padding:54px 0 28px;background:linear-gradient(180deg,transparent,rgba(18,20,26,.5))}
+.footer-grid{display:grid;grid-template-columns:1.4fr .8fr .9fr 1fr;gap:28px}
+.footer-tagline{font-size:.8rem;color:var(--bp-text-secondary);line-height:1.6;margin:14px 0 0;max-width:280px}
+.footer-nav-col,.footer-contact-col{display:flex;flex-direction:column;gap:10px;font-size:.8rem;color:var(--bp-text-secondary)}
+.footer-nav-col h4,.footer-contact-col h4{font-family:var(--bp-font-body);font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--bp-text-muted);margin:0 0 6px}
+.footer-nav-col a:hover,.footer-contact-col a:hover{color:var(--bp-amber)}
+.footer-contact-col p{margin:0;font-size:.8rem;color:var(--bp-text-secondary)}
+.footer-socials{display:flex;gap:12px}
+.footer-bottom{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px solid var(--bp-border-subtle);margin-top:40px;padding-top:22px;font-size:.72rem;color:var(--bp-text-muted)}
+.footer-credit{color:var(--bp-text-secondary)}
+.footer-credit:hover{color:var(--bp-amber)}
+
+/* ---------- FLOATING WHATSAPP ---------- */
+.wa-float{position:fixed;bottom:26px;right:26px;z-index:1200;display:inline-flex;align-items:center;gap:10px;background:#22c55e;color:#fff;border-radius:100px;padding:14px 20px;font-weight:600;font-size:.84rem;box-shadow:0 10px 34px rgba(34,197,94,.45);transition:transform .25s var(--bp-ease-spring)}
+.wa-float:hover{transform:translateY(-3px) scale(1.03)}
+.wa-float-label{max-width:120px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@media (max-width:640px){.wa-float-label{display:none}.wa-float{padding:16px;border-radius:50%}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:980px){
+  .desktop-nav{display:none}
+  .hero-grid,.split-section,.trial-section,.contact-section,.qr-container{grid-template-columns:1fr}
+  .program-grid,.trainers-grid,.membership-cards-grid,.testimonials-grid{grid-template-columns:1fr 1fr}
+  .facility-grid-four{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .lead-panel{grid-row:auto}
+  .statement-band{grid-template-columns:1fr;gap:10px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .section-pad{padding:64px 0}
+  .program-grid,.trainers-grid,.membership-cards-grid,.testimonials-grid,.class-list-grid{grid-template-columns:1fr}
+  .form-pair{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .header-actions .member-login-link{display:none}
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion:reduce){
+  .eyebrow .dot,.button-primary{animation:none}
+  html{scroll-behavior:auto}
+}
